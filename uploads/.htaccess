@@ -1,0 +1,11 @@
+# Deny PHP execution
+<FilesMatch "\.php$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# Only allow media
+<FilesMatch "\.(jpg|jpeg|png|gif|webp|svg|mp4|webm|mp3|wav)$">
+    Order allow,deny
+    Allow from all
+</FilesMatch>

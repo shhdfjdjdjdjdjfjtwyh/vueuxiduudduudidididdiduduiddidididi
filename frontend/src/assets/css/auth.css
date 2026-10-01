@@ -1,0 +1,27 @@
+.auth-page{min-height:100vh;display:flex;align-items:center;justify-content:center;background:#f1f3f6;padding:20px}
+.auth-container{display:grid;grid-template-columns:1fr 1fr;max-width:1000px;width:100%;background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.1)}
+.auth-left{background:linear-gradient(135deg,#2874f0,#1a5bb8);padding:60px 40px;color:#fff;display:flex;flex-direction:column;justify-content:center}
+.auth-logo{text-align:center;margin-bottom:40px}
+.auth-logo h1{font-size:28px;margin-bottom:8px}
+.auth-features{display:flex;flex-direction:column;gap:15px}
+.feature{font-size:15px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.2)}
+.auth-right{padding:60px 40px}
+.auth-form-wrap h2{font-size:26px;margin-bottom:8px;color:#212121}
+.subtitle{color:#878787;margin-bottom:24px;font-size:14px}
+.form-group{margin-bottom:16px}
+.form-group label{display:block;font-size:13px;font-weight:600;color:#212121;margin-bottom:6px}
+.form-input{width:100%;padding:12px 14px;border:1px solid #e0e0e0;border-radius:8px;font-size:14px;transition:all .2s}
+.form-input:focus{outline:none;border-color:#2874f0;box-shadow:0 0 0 3px rgba(40,116,240,.1)}
+.password-input{position:relative}
+.eye-btn{position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:18px}
+.checkbox-label{display:flex;align-items:center;gap:8px;font-size:13px;cursor:pointer}
+.divider{text-align:center;margin:20px 0;position:relative}
+.divider::before,.divider::after{content:'';position:absolute;top:50%;width:45%;height:1px;background:#e0e0e0}
+.divider::before{left:0}.divider::after{right:0}
+.divider span{background:#fff;padding:0 15px;color:#878787;font-size:12px}
+.alert{padding:12px 16px;border-radius:8px;margin-bottom:16px;font-size:13px}
+.alert-error{background:#ffebee;color:#c62828;border:1px solid #ffcdd2}
+.btn-block{width:100%;padding:14px}
+.auth-footer{text-align:center;margin-top:20px;color:#878787;font-size:14px}
+.auth-footer a{color:#2874f0;font-weight:600}
+@media(max-width:768px){.auth-container{grid-template-columns:1fr}.auth-left{display:none}.auth-right{padding:40px 24px}}

@@ -1,0 +1,116 @@
+<template>
+  <div class="wallet-page">
+    <div class="container">
+      <h1>My Wallet</h1>
+
+      <!-- Balance Card -->
+      <div class="balance-card">
+        <div class="balance-info">
+          <span>Available Balance</span>
+          <h2>₹{{ balance.toLocaleString('en-IN', { minimumFractionDigits: 2 }) }}</h2>
+          <div class="stats-row">
+            <div class="stat">
+              <span>Total Deposited</span>
+              <strong>₹{{ totalDeposit.toLocaleString('en-IN') }}</strong>
+            </div>
+            <div class="stat">
+              <span>Total Spent</span>
+              <strong>₹{{ totalSpent.toLocaleString('en-IN') }}</strong>
+            </div>
+          </div>
+        </div>
+        <div class="balance-actions">
+          <button @click="showDepositModal = true" class="btn btn-success">
+            + Add Money
+          </button>
+          <button @click="showWithdrawModal = true" class="btn btn-outline">
+            Withdraw
+          </button>
+        </div>
+      </div>
+
+      <!-- Transactions -->
+      <div class="transactions-card">
+        <div class="tx-header">
+          <h3>Recent Transactions</h3>
+          <select v-model="filterType" @change="loadTransactions">
+            <option value="">All</option>
+            <option value="deposit">Deposits</option>
+            <option value="purchase">Purchases</option>
+            <option value="refund">Refunds</option>
+            <option value="withdrawal">Withdrawals</option>
+          </select>
+        </div>
+
+        <div v-if="loading" class="loading">Loading...</div>
+
+        <div v-else-if="transactions.length === 0" class="empty">
+          <p>No transactions yet</p>
+        </div>
+
+        <div v-else class="tx-list">
+          <div v-for="tx in transactions" :key="tx.id" class="tx-row">
+            <div class="tx-icon" :class="txIconClass(tx.type)">
+              {{ txIcon(tx.type) }}
+            </div>
+            <div class="tx-info">
+              <strong>{{ txLabel(tx.type) }}</strong>
+              <small>{{ tx.description }}</small>
+              <small class="date">{{ formatDate(tx.created_at) }}</small>
+            </div>
+            <div class="tx-amount" :class="{ positive: tx.amount > 0, negative: tx.amount < 0 }">
+              {{ tx.amount > 0 ? '+' : '' }}₹{{ Math.abs(tx.amount).toLocaleString('en-IN') }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Deposit Modal -->
+    <div v-if="showDepositModal" class="modal-backdrop" @click.self="showDepositModal = false">
+      <div class="modal">
+        <h3>Add Money to Wallet</h3>
+        <p>Choose amount to add</p>
+
+        <div class="quick-amounts">
+          <button 
+            v-for="amt in [500, 1000, 2000, 5000]" 
+            :key="amt"
+            :class="{ active: depositAmount === amt }"
+            @click="depositAmount = amt">
+            ₹{{ amt.toLocaleString('en-IN') }}
+          </button>
+        </div>
+
+        <input 
+          v-model.number="depositAmount" 
+          type="number" 
+          placeholder="Or enter custom amount"
+          class="amount-input"
+          :min="100"
+        >
+
+        <div class="modal-actions">
+          <button @click="showDepositModal = false" class="btn btn-outline">Cancel</button>
+          <button @click="initDeposit" class="btn btn-success" :disabled="depositAmount < 100 || processing">
+            {{ processing ? 'Processing...' : `Pay ₹${depositAmount}` }}
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Withdraw Modal -->
+    <div v-if="showWithdrawModal" class="modal-backdrop" @click.self="showWithdrawModal = false">
+      <div class="modal">
+        <h3>Withdraw Money</h3>
+        <p>Available: ₹{{ balance.toLocaleString('en-IN') }}</p>
+
+        <input 
+          v-model.number="withdrawAmount" 
+          type="number" 
+          placeholder="Amount (min ₹500)"
+          class="amount-input"
+          :min="500"
+        >
+
+        <

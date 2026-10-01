@@ -1,0 +1,8 @@
+# ShopVault Backend Protection
+
+<FilesMatch "\.(sql|log|md|env)$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+Options -Indexes
